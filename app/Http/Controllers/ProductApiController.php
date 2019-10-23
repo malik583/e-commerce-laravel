@@ -40,7 +40,7 @@ class ProductApiController extends Controller
 
 		return response()->json($product);
 	}
-
+	/* This is used to Suggest some products.. */
 	public function suggestProducts(Request $request , $query) 
 	{
 		$product = Products::where("description","LIKE","%".$query."%")->get();
