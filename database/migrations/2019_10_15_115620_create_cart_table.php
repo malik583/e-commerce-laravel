@@ -18,6 +18,7 @@ class CreateCartTable extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('product_id');
             $table->bigInteger('no_of_items');
+            $table->tinyInteger('delete_flag');
             $table->timestamps();
         });
     }
