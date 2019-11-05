@@ -47,11 +47,19 @@ Route::group(['middleware' => 'auth:api'] , function() {
 /*    Folowing are CART API'S    */
 
 Route::group(['middleware' => 'auth:api'] , function() {
-	Route::post('/cart','CartController@addToCart')->middleware('cors');
+	Route::post('/add-to-cart','CartController@addToCart')->middleware('cors');
 });
 
-// Route::post('/cart','CartController@addToCart')->middleware('cors');
+Route::group(['middleware' => 'auth:api'] , function() {
+	Route::get('/cart-details','CartController@getCartDetailsByUserId')->middleware('cors');
+});
 
-Route::get('/cart/{id}','CartController@getCartDetailsByUserId')->middleware('cors');
+Route::group(['middleware' => 'auth:api'] , function() {
+	Route::post('/cart-update','CartController@updateCartById')->middleware('cors');
+});
 
-Route::put('/cart-update/{id}','CartController@updateCartById')->middleware('cors');
+// Route::post('/cart-details','UserController@hello')->middleware('cors');
+
+// Route::get('/cart-details/{id}','CartController@getCartDetailsByUserId')->middleware('cors');
+
+// Route::put('/cart-update/{id}','CartController@updateCartById')->middleware('cors');

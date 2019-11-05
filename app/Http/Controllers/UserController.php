@@ -81,5 +81,9 @@ class UserController extends Controller
 	// 		}
 	// 	return echo''.$d->addToCart($data);
 	// }
+	public function hello(Request $request)
+	{
+		return response()->json(['Array : ' => $request]);
+	}
 }
 ?>
