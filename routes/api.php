@@ -55,11 +55,27 @@ Route::group(['middleware' => 'auth:api'] , function() {
 });
 
 Route::group(['middleware' => 'auth:api'] , function() {
-	Route::post('/cart-update','CartController@updateCartById')->middleware('cors');
+	Route::post('/cart-delete','CartController@deleteCartItem')->middleware('cors');
 });
 
+Route::group(['middleware' => 'auth:api'] , function() {
+	Route::post('/cart-update','CartController@updateCartItem')->middleware('cors');
+});
+// Route::group(['middleware' => 'auth:api'] , function() {
+// 	Route::get('/total-amount','CartController@getTotalAmount')->middleware('cors');
+// });
+Route::get('/total-amount','CartController@getTotalAmount')->middleware('cors');
+
 // Route::post('/cart-details','UserController@hello')->middleware('cors');
+
+Route::get('/testing','CartController@testing')->middleware('cors');
 
 // Route::get('/cart-details/{id}','CartController@getCartDetailsByUserId')->middleware('cors');
 
 // Route::put('/cart-update/{id}','CartController@updateCartById')->middleware('cors');
+/* Below API's are related to Placind Order */
+
+Route::group(['middleware' => 'auth:api'] , function() {
+	Route::post('/place-order','OrderController@placeOrder')->middleware('cors');
+});
+

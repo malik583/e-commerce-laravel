@@ -31,15 +31,12 @@ class CartController extends Controller
 	{
 		$user = Auth::user();
 		$user_id = $user['id'];
-		$result = DB::table('cart')
-				->where('user_id', $user_id)
-				->where('delete_flag', 0)
-				->get();
-
+		$obj = new Cart();
+		$result = $obj->getCartDetailsByUserIdModel($user_id);
 		return response()->json($result);
 	}
 
-	public function updateCartById(Request $request)
+	public function deleteCartItem(Request $request)
 	{
 		$user = Auth::user();
 		$user_id = $user['id'];
@@ -51,7 +48,33 @@ class CartController extends Controller
 
 		return ['Status' => 'Successfully removed this Item from your cart..'];			
 	}
-	
+
+	public function updateCartItem(Request $request)
+	{
+		$user = Auth::user();
+		$quantity = $request->input('no_of_items');
+		$cart_id = $request->input('cart_id');
+		$result = DB::table('cart')
+					->where('id',$cart_id)
+					->update(['no_of_items' => $quantity]);
+
+		if($result == 1) //If fail
+		{
+			return ['Status' => 'Successfully Updated this Item..'];
+		}
+		else
+		{
+			return ['Status' => 'Something went wrong..'];
+		}
+	}
+	public function getTotalAmount()
+	{
+		$user = Auth::user();
+		$user_id = 11;
+		$cartObj = new Cart();
+		$amount = $cartObj->getTotalAmountModel($user_id);
+		return $amount;
+	}	
 }
 
 
