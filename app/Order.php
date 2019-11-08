@@ -38,7 +38,14 @@ class Order extends Model
     {
     	if(!filter_var($inputdata['b_email'], FILTER_VALIDATE_EMAIL) || !filter_var($inputdata['s_email'], FILTER_VALIDATE_EMAIL))
     	{
-    		return ['code'=> 400 , 'Message' => "Invalid Email,Please Enter proper Email."];
+    		return ['code'=> 400 , 'Message' => "This email does not exists."];
+    	}
+    	else
+    	{
+    		if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $inputdata['s_email']) || !preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $inputdata['b_email']))
+    		{
+    			return ['code'=> 400 , 'Message' => "Invalid Email ID please enter valid email ID."];
+    		}
     	}
     	if((!is_numeric($inputdata['b_mobile'])) || (!is_numeric($inputdata['s_mobile'])))
     	{
