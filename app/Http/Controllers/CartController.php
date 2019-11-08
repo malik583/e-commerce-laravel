@@ -13,18 +13,11 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-    	$cart = new Cart();
     	$user = Auth::user();
-		$user_id = $user['id'];		
-    	$cart->user_id = $user_id;
-    	$cart->product_id = $request->input('id');
-    	$cart->product_title = $request->input('title');
-    	$cart->product_description = $request->input('description');
-    	$cart->product_price = $request->input('price');
-    	$cart->product_logo = $request->input('logo');
-    	$cart->no_of_items = $request->input('quantity');
-    	$cart->save();
-		return response()->json($cart);
+		$user_id = $user['id'];
+		$addCartObj = new Cart();
+		$result = 	$addCartObj->addToCartModel($user_id,$request);
+		return $result;
     }
 
 	public function getCartDetailsByUserId()
@@ -41,11 +34,8 @@ class CartController extends Controller
 		$user = Auth::user();
 		$user_id = $user['id'];
 		$cart_id = $request->input('cart_id');
-		$result = DB::table('cart')
-					->where('id',$cart_id)
-					->where('user_id',$user_id)
-					->update(['delete_flag' => 1]);
-
+		$cartDeleteObj = new Cart();
+		$result = $cartDeleteObj->deleteCartItemModel($cart_id,$user_id);		
 		return ['Status' => 'Successfully removed this Item from your cart..'];			
 	}
 
@@ -54,11 +44,9 @@ class CartController extends Controller
 		$user = Auth::user();
 		$quantity = $request->input('no_of_items');
 		$cart_id = $request->input('cart_id');
-		$result = DB::table('cart')
-					->where('id',$cart_id)
-					->update(['no_of_items' => $quantity]);
-
-		if($result == 1) //If fail
+		$updateCartObj = new Cart();
+		$result = $updateCartObj->updateCartItemModel($cart_id,$quantity);
+		if($result == 1) //If Success
 		{
 			return ['Status' => 'Successfully Updated this Item..'];
 		}

@@ -24,6 +24,6 @@ class OrderController extends Controller
     		$result = ['Error' => $validatedResponse['Message']];
     	}
     	
-    	return response()->json($result);
+    	return $result;
     }
 }

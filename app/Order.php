@@ -32,13 +32,37 @@ class Order extends Model
     	$order->name_in_card = $data['name_in_card'];
     	$order->cart_type = $data['cart_type'];
     	$order->save();
-    	return $order;
+    	return response()->json($order);
     }
     public function validatePlaceOrderModel($inputdata)
     {
+    	if(!filter_var($inputdata['b_email'], FILTER_VALIDATE_EMAIL) || !filter_var($inputdata['s_email'], FILTER_VALIDATE_EMAIL))
+    	{
+    		return ['code'=> 400 , 'Message' => "Invalid Email,Please Enter proper Email."];
+    	}
     	if((!is_numeric($inputdata['b_mobile'])) || (!is_numeric($inputdata['s_mobile'])))
     	{
     		return ['code'=> 400 , 'Message' => "Mobile Number contains only Numbers."];
+    	}
+    	if(!is_string($inputdata['b_name']) || !is_string($inputdata['s_name']))
+    	{
+    		return ['code'=> 400 , 'Message' => "Name contains only Alphabets"];
+    	}
+    	if(!is_string($inputdata['b_city']) || !is_string($inputdata['s_city']))
+    	{
+    		return ['code'=> 400 , 'Message' => "City Name contains only Alphabets"];
+    	}
+    	if(!is_string($inputdata['b_state']) || !is_string($inputdata['s_state']))
+    	{
+    		return ['code'=> 400 , 'Message' => "State Name contains only Alphabets"];
+    	}
+    	if(!is_string($inputdata['b_country']) || !is_string($inputdata['s_country']))
+    	{
+    		return ['code'=> 400 , 'Message' => "State Name contains only Alphabets"];
+    	}
+    	if(!is_string($inputdata['name_in_card']) || !is_string($inputdata['name_in_card']))
+    	{
+    		return ['code'=> 400 , 'Message' => "State Name contains only Alphabets"];
     	}
     	return ['code' => 200,'Message' => "Valid Data"];
     }
