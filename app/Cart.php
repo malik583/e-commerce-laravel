@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Cart extends Model {
 
 	protected $table = 'cart';
-	protected $fillable = ['user_id', 'product_id', 'product_title', 'product_description', 'product_price', 'product_logo', 'no_of_items', 'total_amount', 'delete_flag'];
+	protected $fillable = ['user_id', 'product_id', 'product_title', 'product_description', 'product_price', 'product_logo', 'no_of_items', 'total_amount', 'delete_flag', 'order_status'];
 
 	public function addToCartModel($user_id, $request) {
 		$cart = new Cart();
@@ -27,6 +27,7 @@ class Cart extends Model {
 		$result = DB::table($this->table)
 			->where('user_id', $user_id)
 			->where('delete_flag', 0)
+            ->where('order_status', 0)
 			->get();
 		return $result;
 	}

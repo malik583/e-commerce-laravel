@@ -4,12 +4,14 @@ namespace App;
 
 use App\Order;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model {
 	protected $table = 'orders';
 	protected $fillable = ['user_id', 'b_name', 'b_address', 'b_city', 'b_state', 'b_country', 'b_mobile', 'b_email', 's_name', 's_address', 's_city', 's_state', 's_country', 's_mobile', 's_email', 'total_amount', 'name_in_card', 'cart_type'];
 
 	public function insertOrderModel($data, $user_id) {
+		$result = '';
 		$order = new Order();
 		$order->user_id = $user_id;
 		$order->b_name = $data['b_name'];
@@ -29,8 +31,13 @@ class Order extends Model {
 		$order->total_amount = $data['total_amount'];
 		$order->name_in_card = $data['name_in_card'];
 		$order->cart_type = $data['cart_type'];
-		$order->save();
-		return response()->json($order);
+		if ($order->save()) {
+			$result = DB::table('cart')
+				->where('user_id', $user_id)
+				->update(['order_status' => 1]);
+			$result = ['Status' => 'Your Order was successfully placed.', 'Code' => 200];
+		}
+		return $result;
 	}
 
 	public function validatePlaceOrderModel($inputdata) {
